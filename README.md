@@ -5,8 +5,8 @@ EXTRACCIÓN DE CONOCIMIENTO EN BASES DE DATOS
 1.1 Cargar archivos csv
 
 ## 2 Preparación de datos
-### 2.1 Mostrar primeras N líneas
-2.2 Mostrar las últimas N líneas
+-- 2.1 Mostrar primeras N líneas
+-- 2.2 Mostrar las últimas N líneas
 2.3 Información básica del csv
 2.4 Lista de columnas
 2.5 Forma del dataset
