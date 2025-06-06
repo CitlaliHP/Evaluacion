@@ -1,2 +1,2 @@
-# Evaluaci-n
+# Evaluacion
 EXTRACCIÓN DE CONOCIMIENTO EN BASES DE DATOS
