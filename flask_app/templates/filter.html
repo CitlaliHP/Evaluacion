@@ -1,0 +1,17 @@
+
+{% extends 'layout.html' %}
+{% block content %}
+<form method="POST">
+  
+<input name="column" placeholder="Columna">
+<select name="operator">
+  <option value="&lt;">&lt;</option>
+  <option value="&gt;">&gt;</option>
+  <option value="==">==</option>
+</select>
+<input name="value" placeholder="Valor">
+
+  <button type="submit">Enviar</button>
+</form>
+{% if result %}<hr>{{ result|safe }}{% endif %}
+{% endblock %}

@@ -1,0 +1,9 @@
+
+{% extends 'layout.html' %}
+{% block content %}
+<form method="POST">
+  <input name="column" placeholder="Columna">
+  <button type="submit">Enviar</button>
+</form>
+{% if result %}<hr>{{ result|safe }}{% endif %}
+{% endblock %}
