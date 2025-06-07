@@ -2,7 +2,7 @@
 {% extends 'layout.html' %}
 {% block content %}
 <form method="POST">
-  <input name="columns" placeholder="Col1,Col2">
+  <input name="columns" placeholder="Col1,Col2" type="text" required>
   <button type="submit">Enviar</button>
 </form>
 {% if result %}<hr>{{ result|safe }}{% endif %}

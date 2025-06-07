@@ -3,13 +3,13 @@
 {% block content %}
 <form method="POST">
   
-<input name="column" placeholder="Columna">
+<input name="column" placeholder="Columna" type="text" required>
 <select name="operator">
   <option value="&lt;">&lt;</option>
   <option value="&gt;">&gt;</option>
   <option value="==">==</option>
 </select>
-<input name="value" placeholder="Valor">
+<input name="value" placeholder="Valor" type="text" required>
 
   <button type="submit">Enviar</button>
 </form>
