@@ -10,7 +10,7 @@
 
 # 2.- Preparación de datos
 ### 2.1 Mostrar primeras N líneas:
-### Muestra las primeras N filas del dataset utilizando head(n), útil para tener una vista rápida de los datos al inicio.
+  ### Muestra las primeras N filas del dataset utilizando head(n), útil para tener una vista rápida de los datos al inicio.
 ### 2.2 Mostrar las últimas N líneas:
 ### Permite visualizar las últimas N filas con tail(n), útil para revisar registros al final del dataset.
 ### 2.3 Información básica del csv:
