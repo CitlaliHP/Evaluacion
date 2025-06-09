@@ -4,7 +4,9 @@
 ### Alumnos: 
 ### Citlali Hernández Pérez, Gustavo Del Razo Rivera, Said Isaac León Lara y Fernando Antonio Vargas Velazquez
 
-# 1.- Carga de datos
+# 1.- Carga de datos:
+### Permite al usuario importar archivos CSV (valores separados por comas) para su análisis. El archivo se convierte en un DataFrame, que es una estructura tabular proporcionada por Pandas, adecuada para manipular datos estructurados.
+
 ### 1.1 Cargar archivos csv
 
 # 2.- Preparación de datos
