@@ -1,6 +1,8 @@
 # Evaluación Pandas y Numpy
 ### Materia: 
 ### Extracción de Conocimiento en Bases de Datos
+### Docente:
+### Mtro. Salvador Hernández Mendoza
 ### Alumnos: 
 ### Citlali Hernández Pérez, Gustavo Del Razo Rivera, Said Isaac León Lara y Fernando Antonio Vargas Velazquez
 
