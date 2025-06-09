@@ -1,0 +1,89 @@
+
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white text-center">
+                <h4><i class="fas fa-expand-arrows-alt"></i> Dimensiones del Dataset</h4>
+                <small>Filas y columnas de tu archivo CSV</small>
+            </div>
+            <div class="card-body">
+                {% if result %}
+                    {% if result.startswith('<b>Error:') %}
+                    <div class="alert alert-danger text-center">{{ result|safe }}</div>
+                    {% else %}
+                    {% set dimensions = result.strip('()').split(', ') %}
+                    <div class="row text-center">
+                        <div class="col-md-6">
+                            <div class="card bg-info text-white">
+                                <div class="card-body">
+                                    <i class="fas fa-grip-lines fa-3x mb-3"></i>
+                                    <h2>{{ dimensions[0] }}</h2>
+                                    <h5>Filas</h5>
+                                    <small>Registros de datos</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-success text-white">
+                                <div class="card-body">
+                                    <i class="fas fa-columns fa-3x mb-3"></i>
+                                    <h2>{{ dimensions[1] }}</h2>
+                                    <h5>Columnas</h5>
+                                    <small>Campos de datos</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <div class="alert alert-primary">
+                            <h5><i class="fas fa-calculator"></i> Dimensión Total</h5>
+                            <h3>{{ dimensions[0] }} × {{ dimensions[1] }} = {{ dimensions[0]|int * dimensions[1]|int }} celdas</h3>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-expand-arrows-alt fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">Carga un archivo CSV para ver las dimensiones</p>
+                    <a href="/" class="btn btn-primary">
+                        <i class="fas fa-upload"></i> Cargar Archivo
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-list fa-2x text-info mb-2"></i>
+                <h6>Ver Columnas</h6>
+                <a href="/columns" class="btn btn-sm btn-outline-info">Lista Completa</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-chart-bar fa-2x text-success mb-2"></i>
+                <h6>Estadísticas</h6>
+                <a href="/describe" class="btn btn-sm btn-outline-success">Ver Análisis</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-eye fa-2x text-primary mb-2"></i>
+                <h6>Ver Datos</h6>
+                <a href="/head" class="btn btn-sm btn-outline-primary">Primeras Filas</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white text-center">
+                <h3><i class="fas fa-file-csv"></i> Cargar Archivo CSV</h3>
+            </div>
+            <div class="card-body">
+                {% if error %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ error|safe }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endif %}
+
+                <div class="text-center mb-4">
+                    <i class="fas fa-cloud-upload-alt fa-5x text-primary mb-3"></i>
+                    <h5>Selecciona tu archivo CSV para comenzar el análisis</h5>
+                    <p class="text-muted">Formatos soportados: .csv | Tamaño máximo: 50MB</p>
+                </div>
+
+                <form method="POST" enctype="multipart/form-data" class="text-center">
+                    <div class="mb-4">
+                        <input type="file" class="form-control form-control-lg" name="file" accept=".csv" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg px-5 btn-custom">
+                        <i class="fas fa-upload"></i> Cargar Archivo
+                    </button>
+                </form>
+
+                <div class="mt-5">
+                    <h6><i class="fas fa-info-circle text-info"></i> Información sobre archivos CSV:</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled small">
+                                <li><i class="fas fa-check text-success"></i> Separados por comas</li>
+                                <li><i class="fas fa-check text-success"></i> Primera fila como encabezados</li>
+                                <li><i class="fas fa-check text-success"></i> Codificación UTF-8</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled small">
+                                <li><i class="fas fa-times text-danger"></i> No archivos Excel (.xlsx)</li>
+                                <li><i class="fas fa-times text-danger"></i> No archivos comprimidos</li>
+                                <li><i class="fas fa-times text-danger"></i> No archivos de texto plano</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

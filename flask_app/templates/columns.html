@@ -1,0 +1,72 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h4><i class="fas fa-columns"></i> Columnas del Dataset</h4>
+                <small>Lista de todas las columnas disponibles en tu archivo CSV</small>
+            </div>
+            <div class="card-body">
+                {% if result %}
+                    {% if result is string and result.startswith('<b>Error:') %}
+                    <div class="alert alert-danger">{{ result|safe }}</div>
+                    {% else %}
+                    <div class="row">
+                        {% for column in result %}
+                        <div class="col-md-4 mb-3">
+                            <div class="card border-success">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-list fa-2x text-success mb-2"></i>
+                                    <h6 class="card-title">{{ column }}</h6>
+                                    <small class="text-muted">Columna {{ loop.index }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="mt-4 text-center">
+                        <div class="alert alert-info">
+                            <strong>Total de columnas:</strong> {{ result|length }}
+                        </div>
+                    </div>
+                    {% endif %}
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-columns fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">Carga un archivo CSV para ver las columnas disponibles</p>
+                    <a href="/" class="btn btn-success">
+                        <i class="fas fa-upload"></i> Cargar Archivo
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-search fa-2x text-primary mb-2"></i>
+                <h6>Seleccionar Una Columna</h6>
+                <a href="/select_one" class="btn btn-primary">Ir a Selección</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-list-check fa-2x text-info mb-2"></i>
+                <h6>Seleccionar Múltiples</h6>
+                <a href="/select_many" class="btn btn-info">Selección Múltiple</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

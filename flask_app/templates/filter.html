@@ -1,0 +1,164 @@
+
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h4><i class="fas fa-filter"></i> Filtrar Datos del Dataset</h4>
+                <small>Aplica filtros para encontrar registros específicos en tu dataset</small>
+            </div>
+            <div class="card-body">
+                <form method="POST" class="mb-4">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="column" class="form-label">Columna a filtrar:</label>
+                            <select class="form-select" name="column" id="column" required>
+                                <option value="">-- Selecciona columna --</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="operator" class="form-label">Operador:</label>
+                            <select class="form-select" name="operator" id="operator" required>
+                                <option value="">-- Operador --</option>
+                                <option value="==">Igual (==)</option>
+                                <option value="!=">Diferente (!=)</option>
+                                <option value=">">Mayor que (>)</option>
+                                <option value="<">Menor que (<)</option>
+                                <option value=">=">Mayor o igual (>=)</option>
+                                <option value="<=">Menor o igual (<=)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="value" class="form-label">Valor:</label>
+                            <input type="text" class="form-control" name="value" id="value" 
+                                   placeholder="Ingresa el valor a filtrar" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">&nbsp;</label>
+                            <div>
+                                <button type="submit" class="btn btn-warning">
+                                    <i class="fas fa-filter"></i> Filtrar
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">&nbsp;</label>
+                            <div>
+                                <button type="button" class="btn btn-secondary" onclick="loadColumns()">
+                                    <i class="fas fa-sync"></i> Cargar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="alert alert-info">
+                    <h6><i class="fas fa-info-circle"></i> Consejos para filtrar:</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled small">
+                                <li><strong>Texto:</strong> Usa == o != para comparaciones exactas</li>
+                                <li><strong>Números:</strong> Puedes usar todos los operadores</li>
+                                <li><strong>Fechas:</strong> Formato: YYYY-MM-DD</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled small">
+                                <li><strong>Ejemplos:</strong></li>
+                                <li>• Edad > 25</li>
+                                <li>• Ciudad == "Madrid"</li>
+                                <li>• Precio <= 100.50</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                {% if result %}
+                <div class="table-container">
+                    {% if result.startswith('<b>Error:') %}
+                    <div class="alert alert-danger">{{ result|safe }}</div>
+                    {% else %}
+                    <div class="table-responsive">
+                        {{ result|safe }}
+                    </div>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class="text-center text-muted py-5">
+                    <i class="fas fa-filter fa-3x mb-3"></i>
+                    <p>Configura los filtros y presiona "Filtrar" para ver los resultados</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+async function loadColumns() {
+    try {
+        const response = await fetch('/columns');
+        const html = await response.text();
+        
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const columnCards = doc.querySelectorAll('.card-title');
+        
+        const select = document.getElementById('column');
+        select.innerHTML = '<option value="">-- Selecciona columna --</option>';
+        
+        columnCards.forEach(card => {
+            const option = document.createElement('option');
+            option.value = card.textContent.trim();
+            option.textContent = card.textContent.trim();
+            select.appendChild(option);
+        });
+        
+        if (columnCards.length > 0) {
+            const alert = document.createElement('div');
+            alert.className = 'alert alert-success alert-dismissible fade show';
+            alert.innerHTML = `
+                <strong>¡Éxito!</strong> Se cargaron ${columnCards.length} columnas.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.querySelector('.card-body').insertBefore(alert, document.querySelector('form'));
+        }
+    } catch (error) {
+        const alert = document.createElement('div');
+        alert.className = 'alert alert-danger alert-dismissible fade show';
+        alert.innerHTML = `
+            <strong>Error:</strong> No se pudieron cargar las columnas.
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.querySelector('.card-body').insertBefore(alert, document.querySelector('form'));
+    }
+}
+
+// Auto-load columns when page loads
+document.addEventListener('DOMContentLoaded', loadColumns);
+
+// Show help based on selected operator
+document.getElementById('operator').addEventListener('change', function() {
+    const value = this.value;
+    const valueInput = document.getElementById('value');
+    
+    switch(value) {
+        case '==':
+        case '!=':
+            valueInput.placeholder = 'Texto exacto (ej: "Madrid")';
+            break;
+        case '>':
+        case '<':
+        case '>=':
+        case '<=':
+            valueInput.placeholder = 'Número (ej: 25, 100.5)';
+            break;
+        default:
+            valueInput.placeholder = 'Ingresa el valor a filtrar';
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,54 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h4><i class="fas fa-arrow-down"></i> Ver Últimas Filas del Dataset</h4>
+                <small>Muestra las últimas N filas de tu archivo CSV</small>
+            </div>
+            <div class="card-body">
+                <form method="POST" class="mb-4">
+                    <div class="row align-items-end">
+                        <div class="col-md-3">
+                            <label for="n" class="form-label">Número de filas:</label>
+                            <select class="form-select" name="n" id="n">
+                                <option value="5" selected>5 filas</option>
+                                <option value="10">10 filas</option>
+                                <option value="15">15 filas</option>
+                                <option value="20">20 filas</option>
+                                <option value="50">50 filas</option>
+                                <option value="100">100 filas</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fas fa-search"></i> Mostrar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                {% if result %}
+                <div class="table-container">
+                    {% if result.startswith('<b>Error:') %}
+                    <div class="alert alert-danger">{{ result|safe }}</div>
+                    {% else %}
+                    <div class="table-responsive">
+                        {{ result|safe }}
+                    </div>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class="text-center text-muted py-5">
+                    <i class="fas fa-table fa-3x mb-3"></i>
+                    <p>Selecciona el número de filas y presiona "Mostrar" para ver los datos</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

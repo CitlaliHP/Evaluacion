@@ -1,0 +1,163 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h4><i class="fas fa-list-check"></i> Seleccionar Múltiples Columnas</h4>
+                <small>Visualiza los datos de varias columnas seleccionadas de tu dataset</small>
+            </div>
+            <div class="card-body">
+                <form method="POST" class="mb-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="columns" class="form-label">Columnas disponibles:</label>
+                            <select multiple class="form-select" id="availableColumns" size="8">
+                            </select>
+                            <button type="button" class="btn btn-secondary mt-2" onclick="loadColumns()">
+                                <i class="fas fa-sync"></i> Cargar Columnas
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="selectedColumns" class="form-label">Columnas seleccionadas:</label>
+                            <select multiple class="form-select" id="selectedColumns" size="8">
+                            </select>
+                            <input type="hidden" name="columns" id="columnsInput">
+                            <button type="submit" class="btn btn-info mt-2">
+                                <i class="fas fa-search"></i> Mostrar Seleccionadas
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12 text-center">
+                            <button type="button" class="btn btn-success me-2" onclick="addSelected()">
+                                <i class="fas fa-arrow-right"></i> Agregar →
+                            </button>
+                            <button type="button" class="btn btn-warning me-2" onclick="removeSelected()">
+                                ← <i class="fas fa-arrow-left"></i> Quitar
+                            </button>
+                            <button type="button" class="btn btn-danger" onclick="clearSelected()">
+                                <i class="fas fa-trash"></i> Limpiar Todo
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                {% if result %}
+                <div class="table-container">
+                    {% if result.startswith('<b>Error:') %}
+                    <div class="alert alert-danger">{{ result|safe }}</div>
+                    {% else %}
+                    <div class="table-responsive">
+                        {{ result|safe }}
+                    </div>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class="text-center text-muted py-5">
+                    <i class="fas fa-list-check fa-3x mb-3"></i>
+                    <p>Selecciona múltiples columnas para visualizar sus datos</p>
+                    <small>Usa los botones para mover columnas entre las listas</small>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+async function loadColumns() {
+    try {
+        const response = await fetch('/columns');
+        const html = await response.text();
+        
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const columnCards = doc.querySelectorAll('.card-title');
+        
+        const select = document.getElementById('availableColumns');
+        select.innerHTML = '';
+        
+        columnCards.forEach(card => {
+            const option = document.createElement('option');
+            option.value = card.textContent.trim();
+            option.textContent = card.textContent.trim();
+            select.appendChild(option);
+        });
+        
+        if (columnCards.length > 0) {
+            showAlert('success', `Se cargaron ${columnCards.length} columnas disponibles.`);
+        }
+    } catch (error) {
+        showAlert('danger', 'No se pudieron cargar las columnas. Asegúrate de haber cargado un archivo CSV.');
+    }
+}
+
+function addSelected() {
+    const available = document.getElementById('availableColumns');
+    const selected = document.getElementById('selectedColumns');
+    
+    for (let option of available.selectedOptions) {
+        const newOption = option.cloneNode(true);
+        selected.appendChild(newOption);
+    }
+    
+    // Remove from available
+    for (let i = available.selectedOptions.length - 1; i >= 0; i--) {
+        available.selectedOptions[i].remove();
+    }
+    
+    updateColumnsInput();
+}
+
+function removeSelected() {
+    const available = document.getElementById('availableColumns');
+    const selected = document.getElementById('selectedColumns');
+    
+    for (let option of selected.selectedOptions) {
+        const newOption = option.cloneNode(true);
+        available.appendChild(newOption);
+    }
+    
+    // Remove from selected
+    for (let i = selected.selectedOptions.length - 1; i >= 0; i--) {
+        selected.selectedOptions[i].remove();
+    }
+    
+    updateColumnsInput();
+}
+
+function clearSelected() {
+    const available = document.getElementById('availableColumns');
+    const selected = document.getElementById('selectedColumns');
+    
+    while (selected.firstChild) {
+        available.appendChild(selected.firstChild);
+    }
+    
+    updateColumnsInput();
+}
+
+function updateColumnsInput() {
+    const selected = document.getElementById('selectedColumns');
+    const columnsInput = document.getElementById('columnsInput');
+    
+    const columns = Array.from(selected.options).map(option => option.value);
+    columnsInput.value = columns.join(',');
+}
+
+function showAlert(type, message) {
+    const alert = document.createElement('div');
+    alert.className = `alert alert-${type} alert-dismissible fade show`;
+    alert.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    document.querySelector('.card-body').insertBefore(alert, document.querySelector('form'));
+}
+
+document.addEventListener('DOMContentLoaded', loadColumns);
+</script>
+{% endblock %}
