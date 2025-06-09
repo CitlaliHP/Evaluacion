@@ -1,5 +1,6 @@
-# Evaluacion
-EXTRACCIÓN DE CONOCIMIENTO EN BASES DE DATOS
+# Evaluación Pandas y Numpy
+Materia: Extracción de Conocimiento en Bases de Datos
+Alumnos:
 
 # 1 Carga de datos
 ### 1.1 Cargar archivos csv
