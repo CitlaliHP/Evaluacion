@@ -1,6 +1,9 @@
 # Evaluación Pandas y Numpy
 ### Materia: Extracción de Conocimiento en Bases de Datos
-### Alumnos: 
+### Alumnos: Citlali Hernández Pérez
+### Gustavo Del Razo Rivera
+### Said Isaac León Lara
+### Fernando Antonio Vargas Velazquez
 
 # 1.- Carga de datos
 ### 1.1 Cargar archivos csv
